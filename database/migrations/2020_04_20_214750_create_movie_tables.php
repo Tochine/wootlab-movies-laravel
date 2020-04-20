@@ -28,6 +28,7 @@ class CreateMovieTables extends Migration
 
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
+            $table->integer("movie_id");
             $table->string("site");
             $table->string("name");
             $table->string("video_id_num");
@@ -38,24 +39,12 @@ class CreateMovieTables extends Migration
 
         Schema::create('genres', function (Blueprint $table) {
             $table->id();
+            $table->integer("movie_id");
             $table->string("name");
             $table->integer("genre_id_num");
             $table->timestamps();
         });
 
-        Schema::create('genre_movie', function (Blueprint $table) {
-            $table->id();
-            $table->integer("genre_id");
-            $table->integer("movie_id");
-            $table->timestamps();
-        });
-
-        Schema::create('movie_video', function (Blueprint $table) {
-            $table->id();
-            $table->integer("movie_id");
-            $table->integer("video_id");
-            $table->timestamps();
-        });
     }
 
     /**
@@ -65,6 +54,6 @@ class CreateMovieTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(['movies', 'videos', 'genres', 'genre_movie', 'movie_video']) ;
+        Schema::dropIfExists(['movies', 'videos', 'genres']) ;
     }
 }
