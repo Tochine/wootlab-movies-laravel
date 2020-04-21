@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Movie;
 use App\Genre;
+use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -32,11 +33,10 @@ class MovieController extends Controller
             foreach ($movies['genres'] as $movieGenres) {
                 Genre::create([
                     'name' => $movieGenres['name'],
-                    'genre_id_num' => $movieGenres['genre_id_num'],
-                    'movie_id' => $movie->movie()->id,
+                    'genre_id_num' => $movieGenres['id'],
+                    'movie_id' => $movie->id,
                 ]);
             }
-            //Genre::create([]);
 
         }
 
