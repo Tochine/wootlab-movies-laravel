@@ -22,5 +22,9 @@ class Movie extends Model
         return $this->hasMany(Video::class);
     }
 
+    public function favorite()
+    {
+        return $this->hasMany(Favourite::class);
+    }
 
 }

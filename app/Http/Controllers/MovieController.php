@@ -54,7 +54,7 @@ class MovieController extends Controller
         //return $allMovies;
         return response()->json([
             'success' => 'Successfully saved',
-            $allMovies], 200);
+            $allMovies], 201);
     }
 
     /**
@@ -64,17 +64,23 @@ class MovieController extends Controller
      */
     public function index()
     {
-        return Movie::all();
+        return Movie::paginate(10);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response 
      */
-    public function create()
+    public function createCategory(Request $request, $id)
     {
-        //
+        $movieId = Movie::where('id', $id)->first();
+
+        Favorite::create([
+            'movie_id' => $movieId->id,
+        ]);
+
+        return response()->json(['success' => 'Movie saved', $movieId], 201);
     }
 
     /**
