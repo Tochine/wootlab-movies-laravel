@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Movie;
 use App\Genre;
 use App\Video;
+use App\Favorite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -72,15 +73,29 @@ class MovieController extends Controller
      *
      * @return \Illuminate\Http\Response 
      */
-    public function createCategory(Request $request, $id)
-    {
-        $movieId = Movie::where('id', $id)->first();
 
+
+    // Store Favorite movies
+    public function storeFavorite(Request $request)
+    {
+        $movie_id = $request->movie_id;
+        $movieId = Movie::where('id', $movie_id)->first();
         Favorite::create([
             'movie_id' => $movieId->id,
         ]);
 
         return response()->json(['success' => 'Movie saved', $movieId], 201);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Movie  $movie
+     * @return \Illuminate\Http\Response
+     */
+    public function removeFavorite(Movie $movie)
+    {
+        
     }
 
     /**
