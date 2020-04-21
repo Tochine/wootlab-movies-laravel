@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Genre extends Model
 {
-    protected $fillable = [''];
+    protected $fillable = ['movie_id', 'name', 'genre_id_num'];
 
 
     // Get the genres for the Movie
