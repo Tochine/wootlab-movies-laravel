@@ -16,5 +16,11 @@ class Movie extends Model
         return $this->hasMany(Genre::class);
     }
 
+    // Get the videos for the Movie
+    public function videos()
+    {
+        return $this->hasMany(Video::class);
+    }
+
 
 }

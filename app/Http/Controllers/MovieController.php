@@ -29,18 +29,32 @@ class MovieController extends Controller
                 'homepage' => $movies['homepage'],
             ]);
 
-        //return $movies['genres'];
+        
             foreach ($movies['genres'] as $movieGenres) {
                 Genre::create([
                     'name' => $movieGenres['name'],
                     'genre_id_num' => $movieGenres['id'],
                     'movie_id' => $movie->id,
                 ]);
+                
             }
+            foreach ($movies['vidoes'] as $movieVideos) {
+                Video::create([
+                    'movie_id' => $movie->id,
+                    'site' => $movieVideos['site'],
+                    'name' => $movieVideos['name'],
+                    'video_id_num' => $movieVideos['id'],
+                    'type' => $movieVideos['type'],
+                    'key' => $movieVideos['key'],
+                ]);
 
+            }
+            
         }
-
-        return response()->json(['success' => 'Successfully saved'], 200);
+        //return $allMovies;
+        return response()->json([
+            'success' => 'Successfully saved',
+            $allMovies], 200);
     }
 
     /**
