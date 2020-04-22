@@ -18,7 +18,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// API routes for movies
 Route::get('/store-movies', 'MovieController@storeMovies');
 Route::get('/all', 'MovieController@index');
 Route::get('/store-favorite', 'MovieController@storeFavorite');
 Route::delete('/remove-favorite/{movie}', 'MovieController@removeFavorite');
+
+// API routes for user 
+Route::post('login', 'UserController@login');
+Route::post('register', 'UserController@register');
+Route::group(['middleware' => 'auth:api'], function(){
+Route::post('details', 'UserController@details');
+});
