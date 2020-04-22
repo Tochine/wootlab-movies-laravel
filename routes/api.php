@@ -21,3 +21,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/store-movies', 'MovieController@storeMovies');
 Route::get('/all', 'MovieController@index');
 Route::get('/store-favorite', 'MovieController@storeFavorite');
+Route::delete('/remove-favorite/{movie}', 'MovieController@removeFavorite');
