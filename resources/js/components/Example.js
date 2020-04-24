@@ -46,5 +46,5 @@ const Movies = () => {
 export default Movies;
 
 if (document.getElementById("example")) {
-    ReactDOM.render(<Example />, document.getElementById("example"));
+    ReactDOM.render(<Movies />, document.getElementById("example"));
 }
