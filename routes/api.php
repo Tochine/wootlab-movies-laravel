@@ -21,12 +21,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // API routes for movies
 Route::get('/store-movies', 'MovieController@storeMovies');
 Route::get('/all', 'MovieController@index');
-Route::get('/store-favorite', 'MovieController@storeFavorite');
+Route::get('/get-a-movie/{id}', 'MovieController@getAMovie');
+Route::post('/store-favorite/{id}', 'MovieController@storeFavorite');
 Route::delete('/remove-favorite/{movie}', 'MovieController@removeFavorite');
+Route::get('/all-favorite-movies/{id}', 'MovieController@listFavoriteMovies');
 
 // API routes for user 
-Route::post('login', 'UserController@login');
-Route::post('register', 'UserController@register');
-Route::group(['middleware' => 'auth:api'], function(){
-Route::post('details', 'UserController@details');
-});
+Route::post('/login', 'UserController@login');
+Route::post('/register', 'UserController@register');

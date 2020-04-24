@@ -22,9 +22,9 @@ class Movie extends Model
         return $this->hasMany(Video::class);
     }
 
-    public function favorite()
+    public function user()
     {
-        return $this->hasMany(Favourite::class);
+        return $this->belongsToMany(User::class, 'favorite_movies', 'user_id');
     }
 
 }

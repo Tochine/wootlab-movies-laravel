@@ -6,6 +6,8 @@ use App\Movie;
 use App\Genre;
 use App\Video;
 use App\Favorite;
+use App\User;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -52,7 +54,6 @@ class MovieController extends Controller
             }
             
         }
-        //return $allMovies;
         return response()->json([
             'success' => 'Successfully saved',
             $allMovies], 201);
@@ -68,35 +69,41 @@ class MovieController extends Controller
         return Movie::paginate(10);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response 
-     */
+    public function getAMovie($id)
+    {
+        $movie = Movie::findOrFail($id);
+        return response()->json($movie);
+    }
 
 
     // Store Favorite movies
-    public function storeFavorite(Request $request)
+    public function storeFavorite(Request $request, $id)
     {
-        $movie_id = $request->movie_id;
-        $movieId = Movie::where('id', $movie_id)->first();
-        Favorite::create([
-            'movie_id' => $movieId->id,
-        ]);
 
-        return response()->json(['success' => 'Movie saved', $movieId], 201);
+            $user = User::where('id', $id)->first();
+            $user->favoriteMovies()->attach($request->movie_id);
+        return response()->json(['success' => 'Movie saved', $user->favoriteMovies], 201);
+    }
+
+    // Display list of favorite movie
+    public function listFavoriteMovies($id)
+    {
+        $user = User::with('favoriteMovies')->where('id', $id)->first();
+        dd($user->favoriteMovies);
+        foreach ($user->favoriteMovies as $favMovie) {
+            return response()->json(['success' => $favMovie], 200);
+        } 
+        //return response()->json(['success' => $user->favoriteMovies], 200);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Movie  $movie
-     * @return \Illuminate\Http\Response
+     * Remove the specified movie from favorite list.
      */
     public function removeFavorite($id)
     {
-        $movieFavorite = Favorite::findOrFail($id);
-        $movieFavorite->delete();
-        return response()->json(['success' => 'Movie removed'], 204);
+        $user = User::with('favoriteMovies')->where('id', $id)->first();
+        //$movieId = Movie::where('id', $id)->first();
+        $user->favoriteMovies()->detach($movieId);
+        return response()->json(['success' => 'Movie removed'], 200);
     }
 }
