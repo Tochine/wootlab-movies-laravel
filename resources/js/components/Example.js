@@ -1,24 +1,50 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container";
+import Card from "react-bootstrap/Card";
+import Nav from "react-bootstrap/Nav";
+import Row from "react-bootstrap/Row";
 
-function Example() {
+const Movies = () => {
+    const [movies, setMovies] = useState([]);
+
+    useEffect(() => {
+        fetch(`http://127.0.0.1:2000/api/all`)
+            .then((response) => response.json())
+            .then((movies) => setMovies(movies.results));
+    });
     return (
-        <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-md-8">
-                    <div className="card">
-                        <div className="card-header">Example Component</div>
+        <>
+            <Navbar expand="lg" variant="dark" bg="dark">
+                <Container>
+                    <Navbar.Brand href="#">WootLab Movies</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
-                        <div className="card-body">I'm an example component!</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    <Nav className="mr-auto">
+                        <Nav.Link href="#features">Favorite</Nav.Link>
+                    </Nav>
+                </Container>
+            </Navbar>
+            <Container>
+                <Row>
+                    {movies.map((movie, movieId) => (
+                        <Card style={{ width: "18rem" }} key={movieId}>
+                            <Card.Img variant="top" src={movie.backdropPath} />
+                            <Card.Body>
+                                <Card.Title>{movie.title}</Card.Title>
+                                <Card.Text>{movie.overview}</Card.Text>
+                            </Card.Body>
+                        </Card>
+                    ))}
+                </Row>
+            </Container>
+        </>
     );
-}
+};
 
-export default Example;
+export default Movies;
 
-if (document.getElementById('example')) {
-    ReactDOM.render(<Example />, document.getElementById('example'));
+if (document.getElementById("example")) {
+    ReactDOM.render(<Example />, document.getElementById("example"));
 }

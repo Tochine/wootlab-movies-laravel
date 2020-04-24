@@ -5,5 +5,7 @@ The applicaion allow registered user to view movie, watch trailer and also add m
 Instruction
 
 Clone or fork this repo to your local device.
+Run npm install to install packages.
 Run migration to create tables.
+Run app on port 2000.
 Use an API testing tool like Postman to test API endpoint
