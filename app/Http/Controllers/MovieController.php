@@ -25,6 +25,7 @@ class MovieController extends Controller
                 'voteAverage' => $movies['voteAverage'],
                 'releaseDate' => implode(" ",$movies['releaseDate']),
                 'runtime' => $movies['runtime'],
+                'title' => $movie['title'],
                 'backdropPath' => $movies['backdropPath'],
                 'budget' => $movies['budget'],
                 'posterPath' => $movies['posterPath'],
@@ -66,7 +67,8 @@ class MovieController extends Controller
      */
     public function index()
     {
-        return Movie::paginate(10);
+        $movies = Movie::paginate(10);
+        return response()->json($movies);
     }
 
     public function getAMovie($id)
