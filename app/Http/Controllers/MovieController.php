@@ -25,7 +25,7 @@ class MovieController extends Controller
                 'voteAverage' => $movies['voteAverage'],
                 'releaseDate' => implode(" ",$movies['releaseDate']),
                 'runtime' => $movies['runtime'],
-                'title' => $movie['title'],
+                'title' => $movies['title'],
                 'backdropPath' => $movies['backdropPath'],
                 'budget' => $movies['budget'],
                 'posterPath' => $movies['posterPath'],
