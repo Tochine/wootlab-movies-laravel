@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Movie;
 use App\Genre;
 use App\Video;
+use App\Favorite;
+use App\User;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -29,18 +32,31 @@ class MovieController extends Controller
                 'homepage' => $movies['homepage'],
             ]);
 
-        //return $movies['genres'];
+        
             foreach ($movies['genres'] as $movieGenres) {
                 Genre::create([
                     'name' => $movieGenres['name'],
                     'genre_id_num' => $movieGenres['id'],
                     'movie_id' => $movie->id,
                 ]);
+                
             }
+            foreach ($movies['vidoes'] as $movieVideos) {
+                Video::create([
+                    'movie_id' => $movie->id,
+                    'site' => $movieVideos['site'],
+                    'name' => $movieVideos['name'],
+                    'video_id_num' => $movieVideos['id'],
+                    'type' => $movieVideos['type'],
+                    'key' => $movieVideos['key'],
+                ]);
 
+            }
+            
         }
-
-        return response()->json(['success' => 'Successfully saved'], 200);
+        return response()->json([
+            'success' => 'Successfully saved',
+            $allMovies], 201);
     }
 
     /**
@@ -50,72 +66,44 @@ class MovieController extends Controller
      */
     public function index()
     {
-        return Movie::all();
+        return Movie::paginate(10);
+    }
+
+    public function getAMovie($id)
+    {
+        $movie = Movie::findOrFail($id);
+        return response()->json($movie);
+    }
+
+
+    // Store Favorite movies
+    public function storeFavorite(Request $request, $id)
+    {
+
+            $user = User::where('id', $id)->first();
+            $user->favoriteMovies()->attach($request->movie_id);
+        return response()->json(['success' => 'Movie saved', $user->favoriteMovies], 201);
+    }
+
+    // Display list of favorite movie
+    public function listFavoriteMovies($id)
+    {
+        $user = User::with('favoriteMovies')->where('id', $id)->first();
+        dd($user->favoriteMovies);
+        foreach ($user->favoriteMovies as $favMovie) {
+            return response()->json(['success' => $favMovie], 200);
+        } 
+        //return response()->json(['success' => $user->favoriteMovies], 200);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Remove the specified movie from favorite list.
      */
-    public function create()
+    public function removeFavorite($id)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Movie $movie)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Movie $movie)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Movie $movie)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Movie $movie)
-    {
-        //
+        $user = User::with('favoriteMovies')->where('id', $id)->first();
+        //$movieId = Movie::where('id', $id)->first();
+        $user->favoriteMovies()->detach($movieId);
+        return response()->json(['success' => 'Movie removed'], 200);
     }
 }
