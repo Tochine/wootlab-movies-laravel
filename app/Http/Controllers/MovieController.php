@@ -73,7 +73,7 @@ class MovieController extends Controller
 
     public function getAMovie($id)
     {
-        $movie = Movie::findOrFail($id);
+        $movie = Movie::with(['genres', 'videos'])->findOrFail($id);
         return response()->json($movie);
     }
 
@@ -81,7 +81,6 @@ class MovieController extends Controller
     // Store Favorite movies
     public function storeFavorite(Request $request, $id)
     {
-
             $user = User::where('id', $id)->first();
             $user->favoriteMovies()->attach($request->movie_id);
         return response()->json(['success' => 'Movie saved', $user->favoriteMovies], 201);
@@ -105,7 +104,7 @@ class MovieController extends Controller
     {
         $user = User::with('favoriteMovies')->where('id', $id)->first();
         //$movieId = Movie::where('id', $id)->first();
-        $user->favoriteMovies()->detach($movieId);
+        $user->favoriteMovies()->detach($user->movie_id);
         return response()->json(['success' => 'Movie removed'], 200);
     }
 }
