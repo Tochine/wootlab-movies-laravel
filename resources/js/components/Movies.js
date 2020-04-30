@@ -18,13 +18,14 @@ export default class Movie extends Component {
     componentDidMount() {
         axios.get('http://127.0.0.1:2000/api/all')
             .then(response => {
-                this.setState({ movies: response.data })
-                //console.log(response);
+                this.setState({ movies: response.data.data })
             })
 
     }
 
     render() {
+        const { movies } = this.state;
+
         return (
             <>
                 <Navbar expand="lg" variant="dark" bg="dark">
@@ -40,9 +41,9 @@ export default class Movie extends Component {
                 <Container>
                     <Row>
                         {
-                            this.state.movies.map(movie => {
+                            movies && movies.length > 1 && movies.map(movie => {
                                 return (
-                                    <Card style={{ width: "18rem" }} key={movieId}>
+                                    <Card style={{ width: "18rem" }} key={movie.id}>
                                         <Card.Img variant="top" src={movie.backdropPath} />
                                         <Card.Body>
                                             <Card.Title>{movie.title}</Card.Title>

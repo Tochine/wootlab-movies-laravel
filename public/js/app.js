@@ -73555,14 +73555,14 @@ var Movie = /*#__PURE__*/function (_Component) {
 
       axios.get('http://127.0.0.1:2000/api/all').then(function (response) {
         _this2.setState({
-          movies: response.data
-        }); //console.log(response);
-
+          movies: response.data.data
+        });
       });
     }
   }, {
     key: "render",
     value: function render() {
+      var movies = this.state.movies;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {
         expand: "lg",
         variant: "dark",
@@ -73575,12 +73575,12 @@ var Movie = /*#__PURE__*/function (_Component) {
         className: "mr-auto"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Nav__WEBPACK_IMPORTED_MODULE_5__["default"].Link, {
         href: "#features"
-      }, "Favorite")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Container__WEBPACK_IMPORTED_MODULE_3__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Row__WEBPACK_IMPORTED_MODULE_6__["default"], null, this.state.movies.map(function (movie) {
+      }, "Favorite")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Container__WEBPACK_IMPORTED_MODULE_3__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Row__WEBPACK_IMPORTED_MODULE_6__["default"], null, movies && movies.length > 1 && movies.map(function (movie) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Card__WEBPACK_IMPORTED_MODULE_4__["default"], {
           style: {
             width: "18rem"
           },
-          key: movieId
+          key: movie.id
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Card__WEBPACK_IMPORTED_MODULE_4__["default"].Img, {
           variant: "top",
           src: movie.backdropPath
