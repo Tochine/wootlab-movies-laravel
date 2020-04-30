@@ -67,7 +67,7 @@ class MovieController extends Controller
      */
     public function index()
     {
-        $movies = Movie::paginate(10);
+        $movies = Movie::with(['genres', 'videos'])->paginate(10);
         return response()->json($movies);
     }
 
@@ -91,7 +91,7 @@ class MovieController extends Controller
     public function listFavoriteMovies($id)
     {
         $user = User::with('favoriteMovies')->where('id', $id)->first();
-        dd($user->favoriteMovies);
+        // dd($user->favoriteMovies);
         foreach ($user->favoriteMovies as $favMovie) {
             return response()->json(['success' => $favMovie], 200);
         } 

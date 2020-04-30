@@ -1,9 +1,13 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-import Example from './Example'
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
+import Movies from './Movies'
 
-const App = ()=> (
-    <Example />
+const App = () => (
+    <Router>
+        <Movies path="/" />
+    </Router>
+
 );
 
 
